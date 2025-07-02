@@ -18,3 +18,7 @@
 - order of routes is v.v.imp
 - install Postman app and make a workspace/collection > test API Call
 - Write logic to handle GET, POST, PATCH, PUT, DELETE API Calls and test them on Postman
+- Explore routing and use of ?, + , () , * in the routes
+- Use of regex in routes /a/ , /.*fly$/ 
+- Reading the query params in the routes
+- Reading the dynamic routes
