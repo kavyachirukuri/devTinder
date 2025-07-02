@@ -2,15 +2,28 @@ const express = require('express')
 
 const app = express();
 
-//request handlers
-app.use('/',(req,res) => {
-    res.send("Namaste Kavya!")
+app.use("/user",(req,res)=>{
+    res.send("HAHAHAHAHA")
 })
 
-app.use("/hello",(req,res) => {
-    res.send("Hello hello hello!")
+// this will only handle GET call to /user
+app.get("/user",(req,res)=>{
+    res.send({
+        firstname: "Tejaswi",
+        lastname: "Chirukuri"
+    })
 })
 
+app.post("/user", (req,res)=>{
+    // saving data to DB
+    res.send('Data successfully saved to the database!')
+})
+
+app.delete("/user", (req,res)=>{
+    res.send("Deleted successfully!")
+})
+
+// this will match all the http method API call to /test
 app.use("/test", (req,res)=>{
     res.send("Hello from the server!")
 })
