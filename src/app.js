@@ -17,6 +17,50 @@ app.post('/signup', async (req,res)=>{
     }
 })
 
+// Get user by email
+app.get('/user', async (req,res) => {
+    const userEmail = req.body.emailId;
+
+    try {
+        const users = await User.find({emailId: userEmail})
+        if (users.length === 0){
+            res.status(404).send('User not found');
+        } else {
+          res.send(users)
+        }
+    } catch (err) {
+        res.status(400).send("Something went wrong!")
+    }
+})
+
+//Get user by Id
+app.get('/user/:id', async (req,res)=>{
+    const {id} = req.params;
+
+    try {
+        const user = await User.findById(id);
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+})
+
+// Get all users
+app.get('/feed', async (req,res) => {
+    // const userEmail = req.body.emailId;
+
+    try {
+        const users = await User.find({})
+        if (users.length === 0){
+            res.status(404).send('Users not found');
+        } else {
+          res.send(users)
+        }
+    } catch (err) {
+        res.status(400).send("Something went wrong!")
+    }
+})
+
 connectDB()
 .then(()=>{
     console.log('Database connection established...')
