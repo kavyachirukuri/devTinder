@@ -1,3 +1,4 @@
+//  4. Middleware for Basic Auth
 const adminAuth = (req,res,next) => {
     console.log('Admin auth is getting checked!!');
     const token = 'xyz';
