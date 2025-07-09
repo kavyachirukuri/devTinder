@@ -74,12 +74,22 @@ app.delete("/user", async (req,res)=>{
 })
 
 // Update data of the user
-app.patch("/user", async (req,res) => {
-    const userId = req.body.userId
+app.patch("/user/:userId", async (req,res) => {
+    const userId = req.params?.userId
     const emailId = req.body.emailId;
     const data = req.body
-console.log('userId',userId)
+   
     try {
+        const ALLOWED_UPDATES = ["photoUrl","about","gender","age","skills"]
+        const isUpdateAllowed = Object.keys(data).every((k)=>
+        ALLOWED_UPDATES.includes(k))
+
+        if (!isUpdateAllowed){
+            throw new Error("Update not allowed");
+        }
+        if (data?.skills.length > 10) {
+            throw new Error("Skills cannot be more than 10")
+        }
         let updated;
 
         if (userId){
@@ -88,17 +98,25 @@ console.log('userId',userId)
             runValidators: true
           })
 
-          res.send("User updated successfully")
+        if (!updated) {
+            return res.status(404).send("User not found");
+        }
+
+          return res.send("User updated successfully")
         } else if (emailId){
-            updated = await User.findOneAndUpdate({emailId},data)
+            updated = await User.findOneAndUpdate({ emailId }, data, {
+                returnDocument: 'after',
+                runValidators: true
+            });
+            if (!updated) {
+                return res.status(404).send("User not found");
+            }
+
+            return res.send("User updated successfully");
         } else {
             return res.status(400).send("Provide either userId or emailId")
         }
 
-        if (!updated) {
-            return res.status(404).send("User not found");
-        }
-        res.send('User update successfully')
     } catch (err) {
         res.status(400).send("UPDATE FAILED:" + err.message)
     }
