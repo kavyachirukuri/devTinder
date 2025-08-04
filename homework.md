@@ -18,8 +18,8 @@
 - order of routes is v.v.imp
 - install Postman app and make a workspace/collection > test API Call
 - Write logic to handle GET, POST, PATCH, PUT, DELETE API Calls and test them on Postman
-- Explore routing and use of ?, + , () , * in the routes
-- Use of regex in routes /a/ , /.*fly$/ 
+- Explore routing and use of ?, + , () , \* in the routes
+- Use of regex in routes /a/ , /.\*fly$/
 - Reading the query params in the routes
 - Reading the dynamic routes
 
@@ -29,14 +29,14 @@
 - app.use("/route", rH, [rH2, rH3], rH4, rH5 )
 - What is a Middleware? Why do we need it?
 - How express JS basically handles requests behind the scenes
-- Difference between app.use and app.all 
+- Difference between app.use and app.all
 - Write a dummy Auth middleware for admin
-- Write a dummy auth middleware for all user routes , except  /user/login
+- Write a dummy auth middleware for all user routes , except /user/login
 - Error Handling using app.use("/", (err, req,res,next)=>{})
 
 - Create a free cluster on MongoDB official website (Mongo Atlas)
 - Install mongoose library
-- Connect your application to the Database "Connection-url"  /devTinder
+- Connect your application to the Database "Connection-url" /devTinder
 - Call the connectDB function and connect to database before starting application on 777
 - Create a userSchema & user Model
 - Create POST /signup API to add data to database
@@ -49,7 +49,7 @@
 - User.findOne with duplicate email Ids, which object return first?
 - API - Get user by email
 - API - Feed API - GET /feed - get all the users from the database
-- API - Get user by ID 
+- API - Get user by ID
 - Create a delete user API
 - Difference between PATCH and PUT
 - API - Update a user
@@ -85,3 +85,11 @@
 - Set the expiry of JWT token and cookies to 7 days
 - Create userSchema method to getJWT()
 - Create UserSchema method to comparepassword(passwordInputByUser)
+
+- Explore tinder APIs
+- Create a list of all APIs you can think of in devTinder
+- Group multiple routes under respective router
+- Read documentation for express.Router
+- Create routes folder for managing auth,profile, request routers
+- Create authRouter, profileRouter, requestRouter
+- Import these routers in app.js
