@@ -1,11 +1,11 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 // here, we are defining , what a user is in our database is,
 // what fields this user collection will have
 
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new Error("Invalid email address: " + value);
+          throw new Error('Invalid email address: ' + value);
         }
       },
     },
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       validate(value) {
         if (!validator.isStrongPassword(value)) {
-          throw new Error("Enter a Strong Password: " + value);
+          throw new Error('Enter a Strong Password: ' + value);
         }
       },
     },
@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: {
-        values: ["male", "female", "others"],
+        values: ['male', 'female', 'others'],
         message: (props) => `${props} is not a valid fender type`,
       },
       //   validate(value) {
@@ -57,16 +57,16 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: "https://geographyandyou.com/images/user-profile.png",
+      default: 'https://geographyandyou.com/images/user-profile.png',
       validate(value) {
         if (!validator.isURL(value)) {
-          throw new Error("Invalid Photo URL: " + value);
+          throw new Error('Invalid Photo URL: ' + value);
         }
       },
     },
     about: {
       type: String,
-      default: "This is a default about of the user!",
+      default: 'This is a default about of the user!',
     },
     skills: {
       type: [String],
@@ -80,8 +80,8 @@ const userSchema = new mongoose.Schema(
 userSchema.methods.getJWT = async function () {
   const user = this;
 
-  const token = await jwt.sign({ _id: user._id }, "DEV@Tinder$790", {
-    expiresIn: "7d",
+  const token = await jwt.sign({ _id: user._id }, 'DEV@Tinder$790', {
+    expiresIn: '7d',
   });
 
   return token;
@@ -89,7 +89,7 @@ userSchema.methods.getJWT = async function () {
 
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const user = this;
-  console.log("user.password", user.password);
+  console.log('user.password', user.password);
   const passwordHash = user.password;
 
   const isPasswordValid = await bcrypt.compare(
@@ -100,6 +100,6 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
   return isPasswordValid;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

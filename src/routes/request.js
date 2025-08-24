@@ -27,7 +27,7 @@ requestRouter.post(
         return res.status(404).json({ message: "User not found" });
       }
 
-      const existingConnectionRequest = await connectionRequestModel.findOne({
+      const existingConnectionRequest = await ConnectionRequestModel.findOne({
         $or: [
           { fromUserId, toUserId },
           {
@@ -43,7 +43,7 @@ requestRouter.post(
         });
       }
 
-      const connectionRequest = new connectionRequestModel({
+      const connectionRequest = new ConnectionRequestModel({
         fromUserId,
         toUserId,
         status,
@@ -91,7 +91,7 @@ requestRouter.post(
 
       connectionRequest.status = status;
 
-      const data = await connectionRequest.save();
+      const data = await connectionRequest.save(); // this line should be the second last line of your any api
 
       res.json({ message: "Connection request " + status, data });
     } catch (err) {
