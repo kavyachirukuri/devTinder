@@ -128,3 +128,9 @@
 /feed?page=3&limit=10 => 21-30 => .skip(10) & .limit(10)
 
 skip = (page-1)\*limit;
+
+---
+
+# skipping SES email config
+
+---
