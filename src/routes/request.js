@@ -1,11 +1,13 @@
-const express = require("express");
+const express = require('express');
 const requestRouter = express.Router();
-const { userAuth } = require("../middlewares/auth");
-const User = require("../models/user");
-const ConnectionRequestModel = require("../models/connectionRequest");
+const { userAuth } = require('../middlewares/auth');
+const User = require('../models/user');
+const ConnectionRequestModel = require('../models/connectionRequest');
+
+// const sendEmail = require('../utils/sendEmail');
 
 requestRouter.post(
-  "/request/send/:status/:toUserId",
+  '/request/send/:status/:toUserId',
   userAuth,
   async (req, res) => {
     try {
@@ -13,18 +15,18 @@ requestRouter.post(
       const toUserId = req.params.toUserId;
       const status = req.params.status;
 
-      const allowedStatus = ["ignored", "interested"];
+      const allowedStatus = ['ignored', 'interested'];
 
       if (!allowedStatus.includes(status)) {
         return res.status(400).json({
-          message: "Invalid status type: " + status,
+          message: 'Invalid status type: ' + status,
         });
       }
 
       const toUser = await User.findById(toUserId);
 
       if (!toUser) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       const existingConnectionRequest = await ConnectionRequestModel.findOne({
@@ -39,7 +41,7 @@ requestRouter.post(
 
       if (existingConnectionRequest) {
         return res.status(400).send({
-          message: "Connection Request Already Exists!!",
+          message: 'Connection Request Already Exists!!',
         });
       }
 
@@ -51,19 +53,26 @@ requestRouter.post(
 
       const data = await connectionRequest.save();
 
+      // const emailRes = await sendEmail.run(
+      //   'A new friend request from ' + req.user.firstName,
+      //   req.user.firstName + ' is ' + status + ' in ' + toUser.firstName
+      // );
+
+      // console.log(emailRes);
+
       res.json({
         message:
-          req.user.firstName + " is " + status + " in " + toUser.firstName,
+          req.user.firstName + ' is ' + status + ' in ' + toUser.firstName,
         data,
       });
     } catch (err) {
-      res.status(400).send("ERROR: " + err.message);
+      res.status(400).send('ERROR: ' + err.message);
     }
   }
 );
 
 requestRouter.post(
-  "/request/review/:status/:requestId",
+  '/request/review/:status/:requestId',
   userAuth,
   async (req, res) => {
     try {
@@ -71,31 +80,31 @@ requestRouter.post(
 
       const { status, requestId } = req.params;
 
-      const allowedStatus = ["accepted", "rejected"];
+      const allowedStatus = ['accepted', 'rejected'];
 
       if (!allowedStatus.includes(status)) {
-        return res.status(400).json({ message: "Status not allowed!" });
+        return res.status(400).json({ message: 'Status not allowed!' });
       }
 
       const connectionRequest = await ConnectionRequestModel.findOne({
         _id: requestId,
         toUserId: loggedInUser._id,
-        status: "interested",
+        status: 'interested',
       });
 
       if (!connectionRequest) {
         return res
           .status(404)
-          .json({ message: "Connection request not found" });
+          .json({ message: 'Connection request not found' });
       }
 
       connectionRequest.status = status;
 
       const data = await connectionRequest.save(); // this line should be the second last line of your any api
 
-      res.json({ message: "Connection request " + status, data });
+      res.json({ message: 'Connection request ' + status, data });
     } catch (err) {
-      res.status(400).send("ERROR: " + err.message);
+      res.status(400).send('ERROR: ' + err.message);
     }
   }
 );
