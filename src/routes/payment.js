@@ -8,9 +8,8 @@ const { membershipAmount } = require('../utils/constants');
 const {
   validateWebhookSignature,
 } = require('razorpay/dist/utils/razorpay-utils');
-const { isPassportNumber } = require('validator');
 
-paymentRouter.post('/payment/create', 'userAuth', async (req, res) => {
+paymentRouter.post('/payment/create', userAuth, async (req, res) => {
   try {
     const { membershipType } = req.body;
     const { firstName, lastName, emailId } = req.user;
